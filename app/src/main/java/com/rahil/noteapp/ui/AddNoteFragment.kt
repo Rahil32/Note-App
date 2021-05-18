@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.rahil.noteapp.R
 import com.rahil.noteapp.db.Note
@@ -30,7 +31,7 @@ class AddNoteFragment : BaseFragment() {
         val etTitle = view?.findViewById<EditText>(R.id.edit_text_title)
         val etBody = view?.findViewById<EditText>(R.id.edit_text_body)
         val buttonSave = view?.findViewById<FloatingActionButton>(R.id.floatingActionButtonAddNote)
-        buttonSave?.setOnClickListener {
+        buttonSave?.setOnClickListener { view ->
             val noteTitle = etTitle?.text.toString().trim()
             val noteBody = etBody?.text.toString().trim()
 
@@ -49,6 +50,9 @@ class AddNoteFragment : BaseFragment() {
                 context?.let {
                     NoteDatabase(it).getNoteDao().addNote(note)
                     it.toast("Save Note")
+
+                    val action = AddNoteFragmentDirections.actionSaveNote()
+                    Navigation.findNavController(view).navigate(action)
                 }
             }
         }
